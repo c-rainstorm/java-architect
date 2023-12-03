@@ -1,0 +1,23 @@
+@startuml DNS-CDN
+
+title 带CDN的DNS解析
+
+浏览器 -> 本地DNS服务器 : 查询网站IP
+loop
+本地DNS服务器 -> 权威DNS服务器 : 查询网站IP
+end 
+本地DNS服务器 <- 权威DNS服务器 : CNAME 域名
+
+loop
+本地DNS服务器 -> CDN的权威DNS服务器 : CNAME域名
+CDN的权威DNS服务器 -> CDN的权威DNS服务器 : 递归查询和负载均衡\n根据拓扑结构，熔炼，时延，\n从全国提供服务的CDN缓存节点\n选一个最合适的
+end 
+本地DNS服务器 <- CDN的权威DNS服务器 : IP
+浏览器 <- 本地DNS服务器 : IP
+
+浏览器 -> CDN服务器 : 请求
+CDN服务器 -> 网站服务器 : 请求
+CDN服务器 <- 网站服务器 : 响应
+浏览器 <- CDN服务器 : 响应
+
+@enduml

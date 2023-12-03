@@ -1,0 +1,15 @@
+@startuml DNS-common
+
+title DNS常规解析路径
+
+浏览器 -> 本地DNS服务器 : 查询网站IP
+loop
+本地DNS服务器 -> 权威DNS服务器 : 查询网站IP
+end 
+本地DNS服务器 <- 权威DNS服务器 : IP
+浏览器 <- 本地DNS服务器 : IP
+
+浏览器 -> 网站服务器 : 请求
+浏览器 <- 网站服务器 : 响应
+
+@enduml
